@@ -19,16 +19,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build image for x86_64 with BIOS mode and GPT
+      - name: Build image for x86_64 with BIOS mode
         run: |
           sudo ./alpine-make-vm-image \
-              --image-format raw \
+              --image-format qcow2 \
               --image-size 2G \
               --partition \
               --repositories-file example/repositories \
               --packages "$(cat example/packages)" \
               --script-chroot \
-              custom_alpine-x86_64-bios-cloudinit.raw -- ./example/configure.sh
+              custom_alpine-x86_64-bios-cloudinit.qcow2 -- ./example/configure.sh
 
       - name: Store build timestamp
         run: echo "BUILD_ID=action/$(date +'%Y%m%dT%H%M%SZ')" >> $GITHUB_ENV
@@ -44,5 +44,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.BUILD_ID }}
-          files: |
-            custom_alpine-x86_64-bios-cloudinit.raw
+          files: custom_alpine-x86_64-bios-cloudinit.qcow2
