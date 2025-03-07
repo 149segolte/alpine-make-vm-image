@@ -2,7 +2,7 @@ doas
 doas-sudo-shim
 less
 cloud-init
-blockdev
+libblockdev
 lsblk
 parted
 sfdisk
