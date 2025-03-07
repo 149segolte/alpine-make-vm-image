@@ -31,16 +31,18 @@ jobs:
               custom_alpine-x86_64-bios-cloudinit.raw -- ./example/configure.sh
 
       - name: Store build timestamp
-        run: echo "BUILD_TIME=$(date +'%Y%m%dT%H%M%SZ')" >> $GITHUB_ENV
+        run: echo "BUILD_ID=action/$(date +'%Y%m%dT%H%M%SZ')" >> $GITHUB_ENV
 
-      - name: Create tag with build timestamp
-        run: |
-          git tag -a "action/$BUILD_TIME" -m "Build at $BUILD_TIME"
-          git push origin "action/$BUILD_TIME"
+      - uses: rickstaa/action-create-tag@v1
+        id: "tag_create"
+        with:
+          tag: ${{ env.BUILD_ID }}
+          tag_exists_error: false
+          message: "Release ${{ env.BUILD_ID }}"
 
       - name: Add image to release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "action/$BUILD_TIME"
+          tag_name: ${{ env.BUILD_ID }}
           files: |
             custom_alpine-x86_64-bios-cloudinit.raw
