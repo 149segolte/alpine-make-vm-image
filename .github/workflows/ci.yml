@@ -28,10 +28,19 @@ jobs:
               --repositories-file example/repositories \
               --packages "$(cat example/packages)" \
               --script-chroot \
-              alpine-bios-part-$(date +%Y-%m-%d).raw -- ./example/configure.sh
+              custom_alpine-x86_64-bios-cloudinit.raw -- ./example/configure.sh
+
+      - name: Store build timestamp
+        run: echo "BUILD_TIME=$(date -Iseconds)" >> $GITHUB_ENV
+
+      - name: Create tag with build timestamp
+        run: |
+          git tag -a "action/$BUILD_TIME" -m "Build at $BUILD_TIME"
+          git push origin "action/$BUILD_TIME"
 
       - name: Add image to release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: "action/$BUILD_TIME"
           files: |
-            alpine-bios-part-$(date +%Y-%m-%d).raw
+            custom_alpine-x86_64-bios-cloudinit.raw
