@@ -9,6 +9,7 @@ sfdisk
 sgdisk
 wipefs
 btrfs-progs
+e2fsprogs-extra
 zstd
 chrony
 openssh-server-pam
