@@ -16,3 +16,4 @@ openssh-server-pam
 mount
 qemu-guest-agent
 qemu-guest-agent-openrc
+acpid

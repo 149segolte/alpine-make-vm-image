@@ -18,5 +18,7 @@ step 'Add UsePAM yes to /etc/ssh/sshd_config'
 echo 'UsePAM yes' > /etc/ssh/sshd_config.d/00-usepam.conf
 
 step 'Enable services'
+rc-update add acpid boot
 rc-update add chronyd default
 rc-update add qemu-guest-agent default
+rc-update add sshd default
